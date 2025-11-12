@@ -2,7 +2,7 @@ import asyncio
 import config
 import requests
 from telegram_bot import send_message
-
+from discord_bot import discord_send_message_webhook
 previous_crypto_slug = None
 previous_price_change_1h = None
 
@@ -104,6 +104,7 @@ async def check_prev_and_curr_price_change(endpoint):
                     if current_price_change_1h > previous_price_change_1h:
                         html_log_message = f"🟢 {first_gainer['name']} (<b>{first_gainer['symbol']}</b>)\n\n - <b>Previous</b>: {prev_value:.2f}%\n - <b>Current</b>: {curr_value:.2f}% \n\n Difference: + {difference:.2f}%\n Price: {current_coin_price:.2f} USD\n\n <a href='https://coinmarketcap.com/gainers-losers/' target='_blank'>View on coinmarketcap</a>"
                         await send_message(html_log_message)
+                        await discord_send_message_webhook(f"🟢 {first_gainer['name']} ({first_gainer['symbol']})\n\n - Previous: {prev_value:.2f}%\n - Current: {curr_value:.2f}% \n\n Difference: + {difference:.2f}%\n Price: {current_coin_price:.2f} USD\n\n View on coinmarketcap: https://coinmarketcap.com/gainers-losers/")
 
             # Store the current value
             previous_price_change_1h = current_price_change_1h
